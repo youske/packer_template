@@ -1,0 +1,10 @@
+#
+.vagrant/
+output-virtualbox-iso/
+packer_cache/
+
+*.ovf
+*.vdi
+*.vmdk
+*.iso
+*.box
