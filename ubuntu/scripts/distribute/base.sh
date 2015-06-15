@@ -2,7 +2,8 @@
 apt-get -y update
 apt-get -y install linux-headers-$(uname -r) build-essential
 apt-get -y install zlib1g-dev libssl-dev libreadline-gplv2-dev
-apt-get -y install curl unzip lv
+apt-get -y install lv curl unzip gawk
+apt-get -y install memstat ntpdate
 apt-get -y install ansible
 
 # Set up sudo

@@ -1,8 +1,17 @@
 # Update the box
+cat << EOF > /etc/apt/sources.list
+
+deb http://ftp.jp.debian.org/debian jessie main contrib non-free
+deb-src http://ftp.jp.debian.org/debian jessie main contrib non-free
+deb http://security.debian.org/ jessie/updates main contrib non-free
+
+EOF
+# update install
 apt-get -y update
 apt-get -y install linux-headers-$(uname -r) build-essential
 apt-get -y install zlib1g-dev libssl-dev libreadline-gplv2-dev
-apt-get -y install curl unzip lv
+apt-get -y install lv curl gawk unzip
+apt-get -y install memstat ntpdate
 apt-get -y install ansible
 
 # Set up sudo
