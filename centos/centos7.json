@@ -1,7 +1,11 @@
 {
+  "variables": {
+    "arch": "x86_64",
+    "version": "7.0"
+  },
   "builders": [
     {
-      "vm_name": "centos7.0",
+      "vm_name": "centos{{user `version`}}",
       "guest_os_type": "RedHat_64",
       "iso_checksum_type": "md5",
       "iso_checksum": "d07ab3e615c66a8b2e9a50f4852e6a77",
@@ -11,35 +15,59 @@
       "ssh_username": "vagrant",
       "ssh_wait_timeout": "10000s",
       "headless": "false",
+      "guest_additions_path": "VBoxGuestAdditions_{{.Version}}.iso",
       "vboxmanage": [
         [ "modifyvm","{{.Name}}","--memory","512" ],
         [ "modifyvm","{{.Name}}","--cpus","2" ]
       ],
       "http_directory": "http",
+      "boot_wait": "10s",
       "boot_command": [
-        "<tab> text ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ks.cfg<enter>"
+        "<tab> text ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ks.cfg<enter><wait>"
       ],
       "shutdown_command": "echo 'vagrant' | sudo -S /sbin/halt -h -p"
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "shell",
+      "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
+      "override": {
+        "virtualbox-iso": {
+          "scripts": [
+            "scripts/common/sshd.sh",
+            "scripts/distribute/base.sh",
+            "scripts/distribute/virtualbox.sh",
+            "scripts/common/vagrant.sh",
+            "scripts/distribute/optional.sh",
+            "scripts/distribute/cleanup.sh"
+          ]
+        },
+        "virtualbox-iso": {
+          "scripts": [
+            "scripts/common/sshd.sh",
+            "scripts/distribute/base.sh",
+            "scripts/distribute/virtualbox.sh",
+            "scripts/common/vagrant.sh",
+            "scripts/distribute/optional.sh",
+            "scripts/distribute/cleanup.sh"
+          ]
+        }
+      }
     }
   ],
   "post-processors": [
     {
       "type": "vagrant",
       "compression_level": 9,
-      "output": "centos7.box"
-    }
-  ],
-  "provisioners": [
-    {
-      "type": "shell",
-      "scripts": [
-        "scripts/common/sshd.sh",
-        "scripts/common/vagrant.sh",
-        "scripts/distribute/virtualbox.sh",
-        "scripts/distribute/optional.sh",
-        "scripts/distribute/cleanup.sh"
-      ],
-      "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E bash '{{.Path}}'"
+      "override": {
+        "virtualbox": {
+          "output": "centos{{user `version`}}-{{user `arch`}}-vb.box"
+        },
+        "vmware": {
+          "output": "centos{{user `version`}}-{{user `arch`}}-vw.box"
+        }
+      }
     }
   ]
 }

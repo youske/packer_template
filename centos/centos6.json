@@ -1,0 +1,46 @@
+{
+  "builders": [
+    {
+      "vm_name": "centos7.0",
+      "guest_os_type": "RedHat_64",
+      "iso_checksum_type": "md5",
+      "iso_checksum": "eb3c8be6ab668e6d83a118323a789e6c",
+      "iso_url": "http://ftp.jaist.ac.jp/pub/Linux/CentOS/6.6/isos/x86_64/CentOS-6.6-x86_64-minimal.iso",
+      "type": "virtualbox-iso",
+      "ssh_password": "vagrant",
+      "ssh_username": "vagrant",
+      "ssh_wait_timeout": "10000s",
+      "headless": "false",
+      "vboxmanage": [
+        [ "modifyvm","{{.Name}}","--memory","512" ],
+        [ "modifyvm","{{.Name}}","--cpus","2" ]
+      ],
+      "http_directory": "http",
+      "boot_command": [
+        "<tab> text ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ks.cfg<enter>"
+      ],
+      "shutdown_command": "echo 'vagrant' | sudo -S /sbin/halt -h -p"
+    }
+  ],
+  "post-processors": [
+    {
+      "type": "vagrant",
+      "compression_level": 9,
+      "output": "centos6.box"
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "shell",
+      "scripts": [
+        "scripts/common/sshd.sh",
+        "scripts/distribute/base.sh",
+        "scripts/distribute/virtualbox.sh",
+        "scripts/common/vagrant.sh",
+        "scripts/distribute/optional.sh",
+        "scripts/distribute/cleanup.sh"
+      ],
+      "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E bash '{{.Path}}'"
+    }
+  ]
+}

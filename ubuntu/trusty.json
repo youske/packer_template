@@ -6,9 +6,9 @@
     "ssh_port": 22,
     "locale": "en_US",
     "ssh_wait_timeout": "10000s",
-    "iso_url":"http://releases.ubuntu.com/utopic/ubuntu-14.10-server-amd64.iso",
-    "iso_md5": "91bd1cfba65417bfa04567e4f64b5c55",
-    "vm_name": "ubuntu-utopic"
+    "iso_url":"http://releases.ubuntu.com/14.04.2/ubuntu-14.04.2-server-amd64.iso",
+    "iso_md5": "83aabd8dcf1e8f469f3c72fff2375195",
+    "vm_name": "ubuntu-trusty"
   },
   "builders": [
     {

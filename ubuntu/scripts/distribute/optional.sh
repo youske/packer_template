@@ -2,4 +2,4 @@
 
 apt-get -y install gawk
 
-apt-get -y remove wireless-regdb eject ftp laptop-detect manpages-dev 
+apt-get -y purge wireless-regdb eject ftp laptop-detect manpages-dev
